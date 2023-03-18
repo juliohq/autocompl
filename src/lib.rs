@@ -1,19 +1,7 @@
 mod shuffle;
+mod string_match;
 
-trait StrMatch {
-    /// Iterate over each pattern, compare with `what` and assign a score
-    fn match_score(&self, what: Self) -> usize;
-}
-
-impl StrMatch for String {
-    #[inline]
-    fn match_score(&self, what: String) -> usize {
-        shuffle::shuffle(self)
-            .iter()
-            .map(|pat| if what == *pat { pat.len() } else { 0 })
-            .sum::<usize>()
-    }
-}
+use string_match::StringMatch;
 
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
 #[inline]
@@ -35,8 +23,9 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
         .filter(|word| word.to_lowercase().contains(first_char.unwrap())) // Filter by the first character in `what`
         .map(String::from)
         .collect::<Vec<String>>();
-    sorted
-        .sort_by_cached_key(|entry| StrMatch::match_score(&entry.to_lowercase(), term.to_owned()));
+    sorted.sort_by_cached_key(|entry| {
+        StringMatch::match_score(&entry.to_lowercase(), term.to_owned())
+    });
     sorted.reverse();
 
     sorted
