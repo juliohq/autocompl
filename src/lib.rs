@@ -1,35 +1,45 @@
+use itertools::Itertools;
+
 mod shuffle;
 
 trait StrMatch {
-    fn match_score(&self, what: Self) -> u32;
+    fn match_score(&self, what: Self) -> usize;
 }
 
 impl StrMatch for String {
     #[inline]
-    fn match_score(&self, what: String) -> u32 {
-        let combs = shuffle::shuffle(self);
-        0
+    fn match_score(&self, what: String) -> usize {
+        let patterns = shuffle::shuffle(self);
+
+        // Iterate over each pattern, compare with `what` and assign a score
+        patterns
+            .iter()
+            .map(|pat| {
+                if what == *pat {
+                    println!("{}: {}", what, pat.len());
+                    pat.len()
+                } else {
+                    0
+                }
+            })
+            .sum::<usize>()
     }
 }
 
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
-fn search<'a, T>(what: &str, on: T) -> Vec<&'a str>
+fn search<'a, T>(what: &str, on: T) -> Vec<String>
 where
     T: IntoIterator<Item = &'a str> + Clone + Copy,
 {
     // Convert what to lower
     let term = what.to_lowercase();
 
-    // Get a map with all strings lowercase
-    let lower = on.into_iter().map(str::to_lowercase);
-
     // Get a map with all match scores
-    lower
-        .into_iter()
-        .collect::<Vec<String>>()
-        .sort_by_key(|entry| StrMatch::match_score(entry, term.to_owned()));
+    let mut sorted = on.into_iter().map(String::from).collect::<Vec<String>>();
+    sorted.sort_by_key(|entry| StrMatch::match_score(&entry.to_lowercase(), term.to_owned()));
+    sorted.reverse();
 
-    on.into_iter().collect::<Vec<&str>>()
+    sorted
 }
 
 #[cfg(test)]
