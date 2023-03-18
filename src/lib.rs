@@ -22,7 +22,8 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
 
     // Get a map with all match scores
     let mut sorted = on.into_iter().map(String::from).collect::<Vec<String>>();
-    sorted.sort_by_key(|entry| StrMatch::match_score(&entry.to_lowercase(), term.to_owned()));
+    sorted
+        .sort_by_cached_key(|entry| StrMatch::match_score(&entry.to_lowercase(), term.to_owned()));
     sorted.reverse();
 
     sorted
