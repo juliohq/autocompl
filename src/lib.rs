@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 mod shuffle;
 
 trait StrMatch {
@@ -27,7 +25,7 @@ impl StrMatch for String {
 }
 
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
-fn search<'a, T>(what: &str, on: T) -> Vec<String>
+pub fn search<'a, T>(what: &str, on: T) -> Vec<String>
 where
     T: IntoIterator<Item = &'a str> + Clone + Copy,
 {
