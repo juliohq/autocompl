@@ -9,7 +9,12 @@ pub fn shuffle<T: Into<String>>(word: T) -> Vec<String> {
     let mut combs = vec![];
 
     for char in 1..=word.len() {
-        combs.extend(word.chars().combinations(char).collect_vec());
+        combs.extend(
+            word.chars()
+                .filter(|char| !char.is_whitespace())
+                .combinations(char)
+                .collect_vec(),
+        );
     }
 
     // Collect into strings and reverse for extact match first
