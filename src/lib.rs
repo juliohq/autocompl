@@ -16,10 +16,7 @@ impl StrMatch for String {
 }
 
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
-pub fn search<'a, T>(what: &str, on: T) -> Vec<String>
-where
-    T: IntoIterator<Item = &'a str> + Clone + Copy,
-{
+pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
     // Convert what to lower
     let term = what.to_lowercase();
 
@@ -37,7 +34,7 @@ mod tests {
 
     #[test]
     fn match_score() {
-        let x = search("Rust", ["Python!", "Rust!"]);
+        let x = search("Rust", vec!["Python!".into(), "Rust!".into()]);
         assert_eq!(x, ["Rust!", "Python!"]);
     }
 }
