@@ -1,25 +1,16 @@
 mod shuffle;
 
 trait StrMatch {
+    /// Iterate over each pattern, compare with `what` and assign a score
     fn match_score(&self, what: Self) -> usize;
 }
 
 impl StrMatch for String {
     #[inline]
     fn match_score(&self, what: String) -> usize {
-        let patterns = shuffle::shuffle(self);
-
-        // Iterate over each pattern, compare with `what` and assign a score
-        patterns
+        shuffle::shuffle(self)
             .iter()
-            .map(|pat| {
-                if what == *pat {
-                    println!("{}: {}", what, pat.len());
-                    pat.len()
-                } else {
-                    0
-                }
-            })
+            .map(|pat| if what == *pat { pat.len() } else { 0 })
             .sum::<usize>()
     }
 }
