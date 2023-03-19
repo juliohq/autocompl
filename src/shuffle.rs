@@ -4,17 +4,13 @@ use itertools::Itertools;
 #[inline]
 pub fn shuffle<T: Into<String>>(word: T) -> Vec<String> {
     let word: String = word.into();
+    let valid_chars = word.chars().filter(|char| !char.is_whitespace());
 
     // Collects all combinations
     let mut combs = vec![];
 
     for char in 1..=word.len() {
-        combs.extend(
-            word.chars()
-                .filter(|char| !char.is_whitespace())
-                .combinations(char)
-                .collect_vec(),
-        );
+        combs.extend(valid_chars.clone().combinations(char));
     }
 
     // Collect into strings and reverse for extact match first
