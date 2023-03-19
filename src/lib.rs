@@ -6,7 +6,15 @@ use string_match::StringMatch;
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
 #[inline]
 pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
-    // Convert what to lower
+    // Convert `what` to lower and then trim whitespace
+    #[cfg(feature = "ignore-whitespace")]
+    let term: String = what
+        .to_lowercase()
+        .chars()
+        .filter(|char| !char.is_whitespace())
+        .collect();
+    // Convert `what` to lower
+    #[cfg(not(feature = "ignore-whitespace"))]
     let term = what.to_lowercase();
 
     // Extract first character
