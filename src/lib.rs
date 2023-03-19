@@ -41,6 +41,6 @@ mod tests {
     #[test]
     fn match_score() {
         let x = search("Rust", vec!["Python!".into(), "Rust!".into()]);
-        assert_eq!(x, ["Rust!", "Python!"]);
+        assert_eq!(x, ["Rust!"]);
     }
 }
