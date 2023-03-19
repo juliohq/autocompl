@@ -25,7 +25,6 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
             let lower_word = word.to_lowercase();
             term.chars().all(|char| lower_word.contains(char))
         })
-        .map(String::from)
         .collect::<Vec<String>>();
     sorted.sort_by_cached_key(|entry| {
         StringMatch::match_score(&entry.to_lowercase(), term.to_owned())
