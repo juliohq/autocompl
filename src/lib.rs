@@ -20,7 +20,11 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
     // Get a map with all match scores
     let mut sorted = on
         .into_iter()
-        .filter(|word| word.to_lowercase().contains(first_char.unwrap())) // Filter by the first character in `what`
+        .filter(|word| {
+            // Filter words by all containined characters in `what`
+            let lower_word = word.to_lowercase();
+            term.chars().all(|char| lower_word.contains(char))
+        })
         .map(String::from)
         .collect::<Vec<String>>();
     sorted.sort_by_cached_key(|entry| {
