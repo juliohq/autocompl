@@ -1,6 +1,7 @@
 mod shuffle;
 mod string_match;
 
+use itertools::Itertools;
 use string_match::StringMatch;
 
 /// Searches the given string `what` on `on` for a sorted vector of best matches.
@@ -22,18 +23,18 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
     }
 
     // Get a map with all match scores
-    let mut sorted = on
+    let sorted = on
         .into_iter()
         .filter(|word| {
             // Filter words by all containined characters in `what`
             let lower_word = word.to_lowercase();
             term.chars().all(|char| lower_word.contains(char))
         })
+        .sorted_by_cached_key(|entry| {
+            StringMatch::match_score(&entry.to_lowercase(), term.to_owned())
+        })
+        .rev()
         .collect::<Vec<String>>();
-    sorted.sort_by_cached_key(|entry| {
-        StringMatch::match_score(&entry.to_lowercase(), term.to_owned())
-    });
-    sorted.reverse();
 
     sorted
 }
