@@ -31,7 +31,7 @@ pub fn search(what: &str, on: Vec<String>) -> Vec<String> {
             term.chars().all(|char| lower_word.contains(char))
         })
         .sorted_by_cached_key(|entry| {
-            StringMatch::match_score(&entry.to_lowercase(), term.to_owned())
+            StringMatch::match_score(entry.to_lowercase(), term.to_owned())
         })
         .rev()
         .collect::<Vec<String>>();
