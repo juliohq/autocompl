@@ -1,6 +1,6 @@
 [package]
 name = "autocompl"
-version = "0.2.4"
+version = "0.3.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,4 +10,4 @@ default = ["ignore-whitespace"]
 ignore-whitespace = []
 
 [dependencies]
-itertools = "0.10.5"
+itertools = "0.11"
